@@ -17,7 +17,11 @@ import {
   Car,
   Mountain,
   AlertTriangle,
-  RefreshCw
+  RefreshCw,
+  Heart,
+  MessageCircle,
+  Share2,
+  User
 } from 'lucide-react';
 
 export default function HomePage() {
@@ -239,45 +243,123 @@ export default function HomePage() {
 
       {/* 模态框：小红书内容详情 */}
       {selectedContent && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[80vh] overflow-y-auto">
-            <div className="flex items-center justify-between p-4 border-b border-gray-200">
-              <h2 className="text-lg font-semibold text-gray-900">{selectedContent.title}</h2>
-              <button
-                onClick={closeModal}
-                className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-            <div className="p-4">
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+            {/* 头部图片区域 */}
+            <div className="relative group cursor-pointer" onClick={() => setSelectedContent(null)}>
               <img
                 src={selectedContent.imageUrl}
                 alt={selectedContent.title}
-                className="w-full h-64 object-cover rounded-lg mb-4"
+                className="w-full h-80 object-cover rounded-t-2xl transition-transform duration-300 group-hover:scale-105"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = 'https://via.placeholder.com/800x320/f3f4f6/9ca3af?text=暂无图片';
+                }}
               />
-              <p className="text-gray-600 mb-4">{selectedContent.content}</p>
-              <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
-                <span>作者: {selectedContent.author}</span>
-                <span>发布时间: {selectedContent.publishTime}</span>
+              {/* 图片点击提示 */}
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 rounded-t-2xl flex items-center justify-center">
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 backdrop-blur-sm p-3 rounded-full">
+                  <Maximize2 className="w-6 h-6 text-gray-800" />
+                </div>
               </div>
-              <div className="flex items-center space-x-4 mb-4">
-                <span className="flex items-center space-x-1">
-                  <span>❤️ {selectedContent.likes}</span>
-                </span>
-                <span className="flex items-center space-x-1">
-                  <span>🔖 {selectedContent.collects}</span>
+              {/* 渐变遮罩 */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent rounded-t-2xl" />
+              
+              {/* 关闭按钮 */}
+              <button
+                onClick={closeModal}
+                className="absolute top-4 right-4 p-2 bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 rounded-full transition-all duration-200"
+              >
+                <X className="w-5 h-5" />
+              </button>
+              
+              {/* 分类标签 */}
+              <div className="absolute top-4 left-4">
+                <span className="px-4 py-2 bg-white/90 backdrop-blur-sm text-gray-800 text-sm font-medium rounded-full">
+                  {selectedContent.category}
                 </span>
               </div>
-              <div className="flex flex-wrap gap-2">
-                {selectedContent.tags.map((tag, index) => (
-                  <span
-                    key={index}
-                    className="px-2 py-1 bg-blue-50 text-blue-600 rounded text-sm"
-                  >
-                    {tag}
-                  </span>
-                ))}
+              
+              {/* 互动数据 */}
+              <div className="absolute bottom-4 right-4 flex items-center space-x-3">
+                <div className="flex items-center space-x-2 bg-white/90 backdrop-blur-sm px-3 py-2 rounded-full">
+                  <Heart className="w-4 h-4 text-red-500" />
+                  <span className="text-sm font-medium text-gray-800">{selectedContent.likes}</span>
+                </div>
+                <div className="flex items-center space-x-2 bg-white/90 backdrop-blur-sm px-3 py-2 rounded-full">
+                  <MessageCircle className="w-4 h-4 text-blue-500" />
+                  <span className="text-sm font-medium text-gray-800">{selectedContent.comments}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* 内容区域 */}
+            <div className="p-6 space-y-6">
+              {/* 标题 */}
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900 leading-tight mb-2">
+                  {selectedContent.title}
+                </h2>
+              </div>
+
+              {/* 作者信息 */}
+              <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-xl">
+                <div className="w-12 h-12 bg-gradient-to-br from-pink-400 to-orange-400 rounded-full flex items-center justify-center">
+                  <User className="w-6 h-6 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-gray-900">{selectedContent.author}</h3>
+                  <p className="text-sm text-gray-500">旅行博主 · 已认证</p>
+                </div>
+                <button className="px-4 py-2 bg-gradient-to-r from-pink-500 to-orange-500 text-white rounded-full text-sm font-medium hover:shadow-lg transition-all duration-200">
+                  关注
+                </button>
+              </div>
+
+              {/* 内容文本 */}
+              <div className="prose prose-gray max-w-none">
+                <p className="text-gray-700 leading-relaxed text-base whitespace-pre-line">
+                  {selectedContent.content}
+                </p>
+              </div>
+
+              {/* 标签云 */}
+              <div>
+                <h4 className="text-sm font-semibold text-gray-900 mb-3">相关标签</h4>
+                <div className="flex flex-wrap gap-2">
+                  {selectedContent.tags.map((tag, index) => (
+                    <span
+                      key={index}
+                      className="px-4 py-2 bg-gradient-to-r from-blue-50 to-purple-50 text-blue-600 rounded-full text-sm font-medium border border-blue-100 hover:shadow-md transition-all duration-200 cursor-pointer"
+                    >
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* 互动区域 */}
+              <div className="border-t border-gray-200 pt-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-6">
+                    <button className="flex items-center space-x-2 text-gray-600 hover:text-red-500 transition-colors">
+                      <Heart className="w-5 h-5" />
+                      <span className="font-medium">点赞</span>
+                    </button>
+                    <button className="flex items-center space-x-2 text-gray-600 hover:text-blue-500 transition-colors">
+                      <MessageCircle className="w-5 h-5" />
+                      <span className="font-medium">评论</span>
+                    </button>
+                    <button className="flex items-center space-x-2 text-gray-600 hover:text-green-500 transition-colors">
+                      <Share2 className="w-5 h-5" />
+                      <span className="font-medium">分享</span>
+                    </button>
+                  </div>
+                  
+                  <button className="px-6 py-2 bg-gray-900 text-white rounded-full text-sm font-medium hover:bg-gray-800 transition-colors">
+                    收藏攻略
+                  </button>
+                </div>
               </div>
             </div>
           </div>

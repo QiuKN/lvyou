@@ -1,193 +1,302 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { Search, Filter, Heart, MessageCircle, Share2, MapPin, Calendar, User, X, Maximize2 } from 'lucide-react';
 import { XiaohongshuContent } from '../types';
-import { Heart, Bookmark, Share2, MapPin, Clock, User, Search, Filter } from 'lucide-react';
 
 interface XiaohongshuComponentProps {
   content: XiaohongshuContent[];
-  onContentClick: (content: XiaohongshuContent) => void;
+  onContentClick?: (content: XiaohongshuContent) => void;
 }
 
-const XiaohongshuComponent: React.FC<XiaohongshuComponentProps> = ({
-  content,
-  onContentClick
+const XiaohongshuComponent: React.FC<XiaohongshuComponentProps> = ({ 
+  content, 
+  onContentClick 
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedLocation, setSelectedLocation] = useState<string>('all');
-  const [sortBy, setSortBy] = useState<'likes' | 'time' | 'relevance'>('relevance');
+  const [selectedCategory, setSelectedCategory] = useState('全部');
+  const [sortBy, setSortBy] = useState('相关度');
+  const [previewImage, setPreviewImage] = useState<{url: string, title: string} | null>(null);
 
-  const filteredContent = content
-    .filter(item => {
-      const matchesSearch = item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           item.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           item.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
-      const matchesLocation = selectedLocation === 'all' || item.location === selectedLocation;
-      return matchesSearch && matchesLocation;
-    })
-    .sort((a, b) => {
-      switch (sortBy) {
-        case 'likes':
-          return b.likes - a.likes;
-        case 'time':
-          return new Date(b.publishTime).getTime() - new Date(a.publishTime).getTime();
-        default:
-          return 0;
-      }
+  // 获取所有分类
+  const categories = useMemo(() => {
+    const cats = ['全部', ...Array.from(new Set(content.map(item => item.category)))];
+    return cats;
+  }, [content]);
+
+  // 获取所有标签
+  const allTags = useMemo(() => {
+    const tags = new Set<string>();
+    content.forEach(item => {
+      item.tags.forEach(tag => tags.add(tag));
     });
+    return Array.from(tags);
+  }, [content]);
 
-  const locations = ['all', ...Array.from(new Set(content.map(item => item.location)))];
+  // 过滤和排序内容
+  const filteredContent = useMemo(() => {
+    return content
+      .filter(item => 
+        (selectedCategory === '全部' || item.category === selectedCategory) &&
+        (searchTerm === '' || 
+          item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())))
+      )
+      .sort((a, b) => {
+        switch (sortBy) {
+          case '点赞数':
+            return b.likes - a.likes;
+          case '评论数':
+            return b.comments - a.comments;
+          case '相关度':
+          default:
+            return 0; // 保持原有顺序
+        }
+      });
+  }, [content, searchTerm, selectedCategory, sortBy]);
 
-  const formatNumber = (num: number) => {
-    if (num >= 10000) {
-      return (num / 10000).toFixed(1) + 'w';
+  const handleContentClick = (item: XiaohongshuContent) => {
+    if (onContentClick) {
+      onContentClick(item);
     }
-    return num.toString();
   };
 
-  const getStatusBadge = (likes: number) => {
-    if (likes >= 3000) return 'status-safe';
-    if (likes >= 1000) return 'status-warning';
-    return 'status-traffic';
+  const handleImageClick = (e: React.MouseEvent, imageUrl: string, title: string) => {
+    e.stopPropagation(); // 阻止冒泡，避免触发内容点击
+    setPreviewImage({ url: imageUrl, title });
   };
+
+  const closeImagePreview = () => {
+    setPreviewImage(null);
+  };
+
+  // ESC键关闭图片预览
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && previewImage) {
+        closeImagePreview();
+      }
+    };
+
+    if (previewImage) {
+      document.addEventListener('keydown', handleKeyDown);
+      // 防止背景滚动
+      document.body.style.overflow = 'hidden';
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'unset';
+    };
+  }, [previewImage]);
 
   return (
-    <div className="h-full flex flex-col">
-      {/* 搜索和筛选栏 */}
-      <div className="bg-white rounded-lg p-4 shadow-md mb-4">
-        <div className="flex items-center space-x-3 mb-4">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+    <div className="h-full flex flex-col bg-gray-50">
+      {/* 搜索和筛选区域 */}
+      <div className="p-4 bg-white border-b border-gray-200">
+        <div className="space-y-3">
+          {/* 搜索框 */}
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
             <input
               type="text"
-              placeholder="搜索攻略、地点、标签..."
+              placeholder="搜索攻略、景点、美食..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
             />
           </div>
-          <select
-            value={selectedLocation}
-            onChange={(e) => setSelectedLocation(e.target.value)}
-            className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-          >
-            {locations.map(location => (
-              <option key={location} value={location}>
-                {location === 'all' ? '全部地点' : location}
-              </option>
-            ))}
-          </select>
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as 'likes' | 'time' | 'relevance')}
-            className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-          >
-            <option value="relevance">相关度</option>
-            <option value="likes">点赞数</option>
-            <option value="time">发布时间</option>
-          </select>
-        </div>
-        
-        {/* 热门标签 */}
-        <div className="flex flex-wrap gap-2">
-          {['洱海', '玉龙雪山', '大理古城', '丽江', '自驾游', '避坑指南'].map(tag => (
-            <button
-              key={tag}
-              onClick={() => setSearchTerm(tag)}
-              className="px-3 py-1 bg-gray-100 hover:bg-primary hover:text-white rounded-full text-sm transition-colors"
+          
+          {/* 分类和排序选择 */}
+          <div className="flex items-center space-x-3">
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
             >
-              {tag}
-            </button>
-          ))}
+              {categories.map(cat => (
+                <option key={cat} value={cat}>{cat}</option>
+              ))}
+            </select>
+            
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+            >
+              <option value="相关度">相关度</option>
+              <option value="点赞数">点赞数</option>
+              <option value="评论数">评论数</option>
+            </select>
+          </div>
+          
+          {/* 标签筛选 */}
+          <div className="flex flex-wrap gap-2">
+            {allTags.slice(0, 10).map(tag => (
+              <button
+                key={tag}
+                onClick={() => setSearchTerm(tag)}
+                className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-primary hover:text-white transition-colors"
+              >
+                {tag}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* 内容瀑布流 */}
-      <div className="flex-1 overflow-y-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {filteredContent.map((item) => (
-            <div
-              key={item.id}
-              className="content-card cursor-pointer hover:scale-105 transition-transform duration-200"
-              onClick={() => onContentClick(item)}
-            >
-              {/* 图片区域 */}
-              <div className="relative mb-3">
-                <img
-                  src={item.imageUrl}
-                  alt={item.title}
-                  className="w-full h-48 object-cover rounded-lg"
-                />
-                <div className="absolute top-2 right-2">
-                  <span className={`status-badge ${getStatusBadge(item.likes)}`}>
-                    {item.likes >= 3000 ? '🔥 热门' : 
-                     item.likes >= 1000 ? '⭐ 推荐' : '📝 攻略'}
-                  </span>
-                </div>
-              </div>
-
-              {/* 内容区域 */}
-              <div className="space-y-2">
-                <h3 className="font-semibold text-lg line-clamp-2 hover:text-primary">
-                  {item.title}
-                </h3>
-                <p className="text-gray-600 text-sm line-clamp-3">
-                  {item.content}
-                </p>
-                
-                {/* 标签 */}
-                <div className="flex flex-wrap gap-1">
-                  {item.tags.slice(0, 3).map(tag => (
-                    <span
-                      key={tag}
-                      className="px-2 py-1 bg-blue-50 text-blue-600 rounded text-xs"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                {/* 作者和互动信息 */}
-                <div className="flex items-center justify-between text-sm text-gray-500">
-                  <div className="flex items-center space-x-2">
-                    <User className="w-4 h-4" />
-                    <span>{item.author}</span>
-                  </div>
-                  <div className="flex items-center space-x-1">
-                    <Clock className="w-4 h-4" />
-                    <span>{item.publishTime}</span>
-                  </div>
-                </div>
-
-                {/* 互动按钮 */}
-                <div className="flex items-center justify-between pt-2 border-t border-gray-100">
-                  <div className="flex items-center space-x-4">
-                    <button className="flex items-center space-x-1 text-gray-500 hover:text-red-500 transition-colors">
-                      <Heart className="w-4 h-4" />
-                      <span>{formatNumber(item.likes)}</span>
-                    </button>
-                    <button className="flex items-center space-x-1 text-gray-500 hover:text-blue-500 transition-colors">
-                      <Bookmark className="w-4 h-4" />
-                      <span>{formatNumber(item.collects)}</span>
-                    </button>
-                  </div>
-                  <button className="text-gray-500 hover:text-gray-700 transition-colors">
-                    <Share2 className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {filteredContent.length === 0 && (
+      {/* 内容列表 */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        {filteredContent.length === 0 ? (
           <div className="text-center py-8 text-gray-500">
             <Search className="w-12 h-12 mx-auto mb-4 text-gray-300" />
             <p>没有找到相关攻略</p>
-            <p className="text-sm">尝试调整搜索条件或筛选条件</p>
+            <p className="text-sm">试试其他关键词或分类</p>
           </div>
+        ) : (
+          filteredContent.map((item) => (
+            <div 
+              key={item.id} 
+              onClick={() => handleContentClick(item)}
+              className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-100 hover:border-gray-200 hover:-translate-y-1"
+            >
+              {/* 图片展示区域 */}
+              <div className="relative group cursor-pointer" onClick={(e) => handleImageClick(e, item.imageUrl, item.title)}>
+                <img
+                  src={item.imageUrl}
+                  alt={item.title}
+                  className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = 'https://via.placeholder.com/400x192/f3f4f6/9ca3af?text=暂无图片';
+                  }}
+                />
+                {/* 图片点击提示 */}
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 rounded-t-2xl flex items-center justify-center">
+                  <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 backdrop-blur-sm p-2 rounded-full">
+                    <Maximize2 className="w-5 h-5 text-gray-800" />
+                  </div>
+                </div>
+                {/* 渐变遮罩层 */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                
+                {/* 标签浮层 */}
+                <div className="absolute top-3 left-3">
+                  <span className="px-3 py-1 bg-white/90 backdrop-blur-sm text-gray-800 text-xs font-medium rounded-full">
+                    {item.category}
+                  </span>
+                </div>
+                
+                {/* 互动数据浮层 */}
+                <div className="absolute bottom-3 right-3 flex items-center space-x-2">
+                  <div className="flex items-center space-x-1 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full">
+                    <Heart className="w-3 h-3 text-red-500" />
+                    <span className="text-xs font-medium text-gray-800">{item.likes}</span>
+                  </div>
+                  <div className="flex items-center space-x-1 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full">
+                    <MessageCircle className="w-3 h-3 text-blue-500" />
+                    <span className="text-xs font-medium text-gray-800">{item.comments}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* 内容信息 */}
+              <div className="p-4 space-y-3">
+                {/* 标题 */}
+                <h3 className="font-bold text-lg text-gray-900 leading-tight line-clamp-2">
+                  {item.title}
+                </h3>
+                
+                {/* 内容预览 */}
+                <p className="text-gray-600 text-sm leading-relaxed line-clamp-3">
+                  {item.content}
+                </p>
+                
+                {/* 作者信息 */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-8 h-8 bg-gradient-to-br from-pink-400 to-orange-400 rounded-full flex items-center justify-center">
+                      <User className="w-4 h-4 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">{item.author}</p>
+                      <p className="text-xs text-gray-500">旅行达人</p>
+                    </div>
+                  </div>
+                  
+                  {/* 标签 */}
+                  <div className="flex flex-wrap gap-1 max-w-[200px]">
+                    {item.tags.slice(0, 2).map(tag => (
+                      <span
+                        key={tag}
+                        className="px-2 py-1 bg-gradient-to-r from-blue-50 to-purple-50 text-blue-600 text-xs rounded-full border border-blue-100"
+                      >
+                        #{tag}
+                      </span>
+                    ))}
+                    {item.tags.length > 2 && (
+                      <span className="px-2 py-1 bg-gray-100 text-gray-500 text-xs rounded-full">
+                        +{item.tags.length - 2}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))
         )}
       </div>
+
+      {/* 图片预览模态框 */}
+      {previewImage && (
+        <div 
+          className="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+          onClick={closeImagePreview}
+        >
+          <div 
+            className="relative w-full h-full flex items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* 关闭按钮 */}
+            <button
+              onClick={closeImagePreview}
+              className="absolute top-4 right-4 z-10 p-3 bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 rounded-full transition-all duration-200"
+            >
+              <X className="w-6 h-6" />
+            </button>
+            
+            {/* 图片标题 */}
+            <div className="absolute top-4 left-4 z-10">
+              <h3 className="px-4 py-2 bg-black/50 backdrop-blur-sm text-white text-lg font-medium rounded-full max-w-md truncate">
+                {previewImage.title}
+              </h3>
+            </div>
+            
+            {/* 大图 - 完整显示 */}
+            <img
+              src={previewImage.url}
+              alt={previewImage.title}
+              className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+              style={{
+                maxWidth: 'calc(100vw - 2rem)',
+                maxHeight: 'calc(100vh - 2rem)'
+              }}
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = 'https://via.placeholder.com/800x600/f3f4f6/9ca3af?text=图片加载失败';
+              }}
+            />
+            
+            {/* 操作提示 */}
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10">
+              <div className="px-4 py-2 bg-black/50 backdrop-blur-sm text-white text-sm rounded-full">
+                点击背景区域关闭 • ESC键关闭
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

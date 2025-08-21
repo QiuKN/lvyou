@@ -25,16 +25,15 @@ export interface MapMarker {
 }
 
 export interface XiaohongshuContent {
-  id: string;
+  id: number;
   title: string;
   content: string;
   author: string;
   likes: number;
-  collects: number;
-  publishTime: string;
+  comments: number;
   tags: string[];
   imageUrl: string;
-  location: string;
+  category: string;
 }
 
 export interface TrafficInfo {

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>地图容器调试页面</title>
+    <style>
+        body { margin: 0; padding: 20px; font-family: Arial, sans-serif; }
+        .debug-info { background: #f0f0f0; padding: 15px; margin: 20px 0; border-radius: 5px; font-family: monospace; }
+        .container { width: 100%; height: 400px; border: 2px solid #ccc; margin: 20px 0; background: #f9f9f9; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .loading { background: #e3f2fd; color: #1976d2; }
+        .success { background: #e8f5e8; color: #2e7d32; }
+        .error { background: #ffebee; color: #c62828; }
+    </style>
+</head>
+<body>
+    <h1>地图容器调试页面</h1>
+    
+    <div class="status loading" id="status">正在检查容器状态...</div>
+    
+    <div class="debug-info">
+        <h3>容器信息</h3>
+        <div id="container-info">检查中...</div>
+    </div>
+    
+    <div class="container" id="map">
+        <div style="padding: 20px; text-align: center; color: #666;">
+            这是地图容器，ID: map
+        </div>
+    </div>
+    
+    <div class="debug-info">
+        <h3>高德地图测试</h3>
+        <button onclick="testAMap()" style="padding: 10px 20px; margin: 10px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
+            测试高德地图加载
+        </button>
+        <div id="amap-result">未测试</div>
+    </div>
+
+    <script>
+        const AMAP_KEY = '6f26c9822c56885edcac606bf196598a';
+        const statusEl = document.getElementById('status');
+        const containerInfoEl = document.getElementById('container-info');
+        const amapResultEl = document.getElementById('amap-result');
+        
+        function updateStatus(message, type = 'loading') {
+            statusEl.textContent = message;
+            statusEl.className = `status ${type}`;
+        }
+        
+        function updateContainerInfo() {
+            const mapEl = document.getElementById('map');
+            if (mapEl) {
+                const rect = mapEl.getBoundingClientRect();
+                const computedStyle = getComputedStyle(mapEl);
+                
+                containerInfoEl.innerHTML = `
+                    <p><strong>元素:</strong> ${mapEl.tagName}#${mapEl.id}</p>
+                    <p><strong>offsetWidth:</strong> ${mapEl.offsetWidth}px</p>
+                    <p><strong>offsetHeight:</strong> ${mapEl.offsetHeight}px</p>
+                    <p><strong>clientWidth:</strong> ${mapEl.clientWidth}px</p>
+                    <p><strong>clientHeight:</strong> ${mapEl.clientHeight}px</p>
+                    <p><strong>scrollWidth:</strong> ${mapEl.scrollWidth}px</p>
+                    <p><strong>scrollHeight:</strong> ${mapEl.scrollHeight}px</p>
+                    <p><strong>getBoundingClientRect:</strong> ${rect.width}x${rect.height}</p>
+                    <p><strong>offsetParent:</strong> ${mapEl.offsetParent ? mapEl.offsetParent.tagName : 'null'}</p>
+                    <p><strong>display:</strong> ${computedStyle.display}</p>
+                    <p><strong>position:</strong> ${computedStyle.position}</p>
+                    <p><strong>visibility:</strong> ${computedStyle.visibility}</p>
+                    <p><strong>opacity:</strong> ${computedStyle.opacity}</p>
+                    <p><strong>z-index:</strong> ${computedStyle.zIndex}</p>
+                `;
+            }
+        }
+        
+        // 实时更新容器信息
+        function startContainerMonitoring() {
+            updateContainerInfo();
+            
+            // 每秒更新一次
+            setInterval(updateContainerInfo, 1000);
+            
+            // 监听窗口大小变化
+            window.addEventListener('resize', updateContainerInfo);
+            
+            // 监听DOM变化
+            const observer = new MutationObserver(updateContainerInfo);
+            observer.observe(document.body, { 
+                childList: true, 
+                subtree: true, 
+                attributes: true 
+            });
+        }
+        
+        // 测试高德地图加载
+        async function testAMap() {
+            amapResultEl.innerHTML = '正在测试...';
+            
+            try {
+                // 检查容器
+                const mapEl = document.getElementById('map');
+                if (!mapEl) {
+                    throw new Error('地图容器未找到');
+                }
+                
+                if (mapEl.offsetWidth === 0 || mapEl.offsetHeight === 0) {
+                    throw new Error('地图容器尺寸为0');
+                }
+                
+                amapResultEl.innerHTML = '容器检查通过，正在加载高德地图...';
+                
+                // 加载高德地图脚本
+                const AMap = await loadAMapScript();
+                amapResultEl.innerHTML = '脚本加载成功，正在创建地图...';
+                
+                // 创建地图
+                const map = new AMap.Map('map', {
+                    zoom: 5,
+                    center: [108.3200, 22.8240], // 南宁
+                    mapStyle: 'amap://styles/normal'
+                });
+                
+                amapResultEl.innerHTML = '✅ 地图创建成功！';
+                updateStatus('高德地图测试成功！', 'success');
+                
+            } catch (error) {
+                amapResultEl.innerHTML = `❌ 测试失败: ${error.message}`;
+                updateStatus('高德地图测试失败', 'error');
+                console.error('AMap test failed:', error);
+            }
+        }
+        
+        // 加载高德地图脚本
+        function loadAMapScript() {
+            return new Promise((resolve, reject) => {
+                if (window.AMap) {
+                    resolve(window.AMap);
+                    return;
+                }
+
+                const script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.async = true;
+                // 引入所有必要的插件
+                script.src = `https://webapi.amap.com/maps?v=1.4.15&key=${AMAP_KEY}&plugin=AMap.Driving,AMap.TileLayer.Traffic,AMap.Marker,AMap.ToolBar,AMap.Scale,AMap.HawkEye,AMap.MapType,AMap.GeometryUtil`;
+                
+                script.onload = () => {
+                    // 等待一下确保插件完全加载
+                    setTimeout(() => {
+                        if (window.AMap) {
+                            console.log('AMap plugins loaded:', {
+                                Map: !!window.AMap.Map,
+                                Driving: !!window.AMap.Driving,
+                                Traffic: !!window.AMap.TileLayer?.Traffic,
+                                Marker: !!window.AMap.Marker
+                            });
+                            resolve(window.AMap);
+                        } else {
+                            reject(new Error('AMap not available after script load'));
+                        }
+                    }, 100);
+                };
+                
+                script.onerror = (error) => {
+                    reject(new Error('Failed to load AMap script'));
+                };
+                
+                document.head.appendChild(script);
+            });
+        }
+
+        // 页面加载完成后开始监控
+        window.addEventListener('load', () => {
+            updateStatus('页面加载完成，开始监控容器状态', 'success');
+            startContainerMonitoring();
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高德地图插件测试</title>
+    <style>
+        body { margin: 0; padding: 20px; font-family: Arial, sans-serif; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background: #e8f5e8; border-color: #4caf50; }
+        .error { background: #ffebee; border-color: #f44336; }
+        .loading { background: #e3f2fd; border-color: #2196f3; }
+        .plugin-list { font-family: monospace; background: #f5f5f5; padding: 10px; border-radius: 3px; }
+        button { padding: 10px 20px; margin: 5px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        button:disabled { background: #ccc; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+    <h1>高德地图插件加载测试</h1>
+    
+    <div class="test-section loading" id="status">
+        <h3>状态: 准备中...</h3>
+        <p>API Key: 6f26c9822c56885edcac606bf196598a</p>
+    </div>
+    
+    <div class="test-section">
+        <h3>插件加载测试</h3>
+        <button onclick="testPluginLoading()" id="testBtn">开始测试插件加载</button>
+        <button onclick="testMapCreation()" id="mapBtn" disabled>测试地图创建</button>
+        <div id="pluginResult"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>已加载的插件</h3>
+        <div id="pluginList" class="plugin-list">等待测试...</div>
+    </div>
+    
+    <div class="test-section">
+        <h3>地图容器</h3>
+        <div id="map" style="width: 100%; height: 300px; border: 2px solid #ccc; background: #f9f9f9;">
+            <div style="padding: 20px; text-align: center; color: #666;">
+                地图容器 (ID: map)
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const AMAP_KEY = '6f26c9822c56885edcac606bf196598a';
+        let AMapLoaded = false;
+        
+        function updateStatus(message, type = 'loading') {
+            const statusEl = document.getElementById('status');
+            statusEl.innerHTML = `<h3>状态: ${message}</h3><p>API Key: ${AMAP_KEY}</p>`;
+            statusEl.className = `test-section ${type}`;
+        }
+        
+        function updatePluginList() {
+            const listEl = document.getElementById('pluginList');
+            if (!window.AMap) {
+                listEl.innerHTML = 'AMap 未加载';
+                return;
+            }
+            
+            const plugins = {
+                'AMap': !!window.AMap,
+                'AMap.Map': !!window.AMap.Map,
+                'AMap.Driving': !!window.AMap.Driving,
+                'AMap.TileLayer.Traffic': !!window.AMap.TileLayer?.Traffic,
+                'AMap.Marker': !!window.AMap.Marker,
+                'AMap.ToolBar': !!window.AMap.ToolBar,
+                'AMap.Scale': !!window.AMap.Scale,
+                'AMap.HawkEye': !!window.AMap.HawkEye,
+                'AMap.MapType': !!window.AMap.MapType,
+                'AMap.GeometryUtil': !!window.AMap.GeometryUtil
+            };
+            
+            let html = '';
+            for (const [name, available] of Object.entries(plugins)) {
+                const status = available ? '✅' : '❌';
+                const color = available ? 'green' : 'red';
+                html += `<div style="color: ${color};">${status} ${name}</div>`;
+            }
+            listEl.innerHTML = html;
+        }
+        
+        async function testPluginLoading() {
+            const testBtn = document.getElementById('testBtn');
+            const resultEl = document.getElementById('pluginResult');
+            
+            testBtn.disabled = true;
+            resultEl.innerHTML = '正在加载插件...';
+            updateStatus('正在加载插件...', 'loading');
+            
+            try {
+                const AMap = await loadAMapScript();
+                AMapLoaded = true;
+                
+                resultEl.innerHTML = '✅ 插件加载成功！';
+                updateStatus('插件加载成功', 'success');
+                testBtn.textContent = '插件已加载';
+                
+                // 启用地图测试按钮
+                document.getElementById('mapBtn').disabled = false;
+                
+                // 更新插件列表
+                updatePluginList();
+                
+            } catch (error) {
+                resultEl.innerHTML = `❌ 插件加载失败: ${error.message}`;
+                updateStatus('插件加载失败', 'error');
+                testBtn.disabled = false;
+                console.error('Plugin loading failed:', error);
+            }
+        }
+        
+        async function testMapCreation() {
+            const mapBtn = document.getElementById('mapBtn');
+            const resultEl = document.getElementById('pluginResult');
+            
+            if (!AMapLoaded || !window.AMap) {
+                resultEl.innerHTML = '❌ 请先加载插件';
+                return;
+            }
+            
+            mapBtn.disabled = true;
+            resultEl.innerHTML = '正在创建地图...';
+            
+            try {
+                const mapEl = document.getElementById('map');
+                
+                // 清空容器
+                mapEl.innerHTML = '';
+                
+                // 创建地图
+                const map = new window.AMap.Map('map', {
+                    zoom: 5,
+                    center: [108.3200, 22.8240], // 南宁
+                    mapStyle: 'amap://styles/normal'
+                });
+                
+                resultEl.innerHTML = '✅ 地图创建成功！';
+                mapBtn.textContent = '地图已创建';
+                
+                // 添加一个标记点
+                if (window.AMap.Marker) {
+                    const marker = new window.AMap.Marker({
+                        position: [108.3200, 22.8240],
+                        title: '南宁'
+                    });
+                    marker.setMap(map);
+                }
+                
+            } catch (error) {
+                resultEl.innerHTML = `❌ 地图创建失败: ${error.message}`;
+                mapBtn.disabled = false;
+                console.error('Map creation failed:', error);
+            }
+        }
+        
+        // 加载高德地图脚本
+        function loadAMapScript() {
+            return new Promise((resolve, reject) => {
+                if (window.AMap) {
+                    resolve(window.AMap);
+                    return;
+                }
+
+                console.log('Loading AMap script...');
+                const script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.async = true;
+                // 引入所有必要的插件
+                script.src = `https://webapi.amap.com/maps?v=1.4.15&key=${AMAP_KEY}&plugin=AMap.Driving,AMap.TileLayer.Traffic,AMap.Marker,AMap.ToolBar,AMap.Scale,AMap.HawkEye,AMap.MapType,AMap.GeometryUtil`;
+                
+                script.onload = () => {
+                    console.log('AMap script loaded successfully');
+                    // 等待一下确保插件完全加载
+                    setTimeout(() => {
+                        if (window.AMap) {
+                            console.log('AMap plugins loaded:', {
+                                Map: !!window.AMap.Map,
+                                Driving: !!window.AMap.Driving,
+                                Traffic: !!window.AMap.TileLayer?.Traffic,
+                                Marker: !!window.AMap.Marker
+                            });
+                            resolve(window.AMap);
+                        } else {
+                            reject(new Error('AMap not available after script load'));
+                        }
+                    }, 200);
+                };
+                
+                script.onerror = (error) => {
+                    reject(new Error('Failed to load AMap script'));
+                };
+                
+                document.head.appendChild(script);
+            });
+        }
+
+        // 页面加载完成后初始化
+        window.addEventListener('load', () => {
+            updateStatus('准备就绪', 'success');
+            updatePluginList();
+        });
+    </script>
+</body>
+</html> 

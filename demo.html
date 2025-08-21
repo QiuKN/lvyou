@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>深圳→大理/丽江7天自驾游规划系统 - 演示</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .status-badge {
+            @apply px-2 py-1 text-xs font-medium rounded-full;
+        }
+        .status-traffic { @apply bg-red-100 text-red-800; }
+        .status-warning { @apply bg-yellow-100 text-yellow-800; }
+        .status-safe { @apply bg-green-100 text-green-800; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- 头部 -->
+    <header class="gradient-bg text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="text-center">
+                <h1 class="text-4xl font-bold mb-4">🚗 深圳→大理/丽江7天自驾游规划系统</h1>
+                <p class="text-xl opacity-90">集成高德地图实时交通 + 小红书热门攻略的智能自驾游规划平台</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要功能展示 -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- 功能特性 -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">✨ 核心功能特性</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4 mx-auto">
+                        <span class="text-3xl">🗺️</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-center mb-3">真实高德地图集成</h3>
+                    <ul class="text-gray-600 space-y-2 text-sm">
+                        <li>• 使用您的API Key: 6f26c***598a</li>
+                        <li>• 基于高德MCP真实路线数据</li>
+                        <li>• 实时交通图层显示</li>
+                        <li>• 3D地图视角</li>
+                        <li>• 路线导航功能</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+                    <div class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mb-4 mx-auto">
+                        <span class="text-3xl">📱</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-center mb-3">小红书MCP真实数据</h3>
+                    <ul class="text-gray-600 space-y-2 text-sm">
+                        <li>• 南宁宵夜地图（379赞）</li>
+                        <li>• 大理停车避坑指南</li>
+                        <li>• 玉龙雪山抢票攻略</li>
+                        <li>• 洱海骑行路线推荐</li>
+                        <li>• 真实用户评价数据</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4 mx-auto">
+                        <span class="text-3xl">📅</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-center mb-3">智能行程规划</h3>
+                    <ul class="text-gray-600 space-y-2 text-sm">
+                        <li>• 7天详细规划</li>
+                        <li>• 按日折叠显示</li>
+                        <li>• 安全提醒系统</li>
+                        <li>• 实时状态更新</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7天行程概览 -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">🗓️ 7天行程概览</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-4">
+                <div class="bg-white rounded-lg p-4 shadow-md text-center">
+                    <div class="text-2xl font-bold text-blue-600 mb-2">D1</div>
+                    <div class="text-sm text-gray-600">深圳→南宁</div>
+                    <div class="text-xs text-gray-500 mt-1">649km/7h12m</div>
+                    <div class="mt-2">
+                        <span class="status-badge status-warning">注意安全</span>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg p-4 shadow-md text-center">
+                    <div class="text-2xl font-bold text-blue-600 mb-2">D2</div>
+                    <div class="text-sm text-gray-600">南宁→大理</div>
+                    <div class="text-xs text-gray-500 mt-1">1098km/12h20m</div>
+                    <div class="mt-2">
+                        <span class="status-badge status-traffic">隧道密集</span>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg p-4 shadow-md text-center">
+                    <div class="text-2xl font-bold text-blue-600 mb-2">D3</div>
+                    <div class="text-sm text-gray-600">洱海环线</div>
+                    <div class="mt-2">
+                        <span class="status-badge status-safe">路况良好</span>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg p-4 shadow-md text-center">
+                    <div class="text-2xl font-bold text-blue-600 mb-2">D4</div>
+                    <div class="text-sm text-gray-600">大理→丽江</div>
+                    <div class="text-xs text-gray-500 mt-1">164km/2h19m</div>
+                    <div class="mt-2">
+                        <span class="status-badge status-safe">路况良好</span>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg p-4 shadow-md text-center">
+                    <div class="text-2xl font-bold text-blue-600 mb-2">D5</div>
+                    <div class="text-sm text-gray-600">玉龙雪山</div>
+                    <div class="text-xs text-gray-500 mt-1">海拔3150m</div>
+                    <div class="mt-2">
+                        <span class="status-badge status-warning">高海拔</span>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg p-4 shadow-md text-center">
+                    <div class="text-2xl font-bold text-blue-600 mb-2">D6</div>
+                    <div class="text-sm text-gray-600">丽江→百色</div>
+                    <div class="text-xs text-gray-500 mt-1">999km/11h22m</div>
+                    <div class="mt-2">
+                        <span class="status-badge status-traffic">极限返程</span>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg p-4 shadow-md text-center">
+                    <div class="text-2xl font-bold text-blue-600 mb-2">D7</div>
+                    <div class="text-sm text-gray-600">百色→深圳</div>
+                    <div class="text-xs text-gray-500 mt-1">891km/9h9m</div>
+                    <div class="mt-2">
+                        <span class="status-badge status-warning">夜间驾驶</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 安全提醒 -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">🚨 安全提醒系统</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-6">
+                    <h3 class="text-xl font-semibold text-yellow-800 mb-4 flex items-center">
+                        <span class="text-2xl mr-2">⚠️</span>
+                        驾驶安全提醒
+                    </h3>
+                    <ul class="text-yellow-700 space-y-2">
+                        <li>• 单日行车时间 ≤ 8小时（除D6）</li>
+                        <li>• 避免3000米以上海拔夜间驾驶</li>
+                        <li>• D6行程包含2个强制休息区</li>
+                        <li>• D7截止时间00:00，注意时间安排</li>
+                    </ul>
+                </div>
+
+                <div class="bg-red-50 border border-red-200 rounded-xl p-6">
+                    <h3 class="text-xl font-semibold text-red-800 mb-4 flex items-center">
+                        <span class="text-2xl mr-2">🏔️</span>
+                        海拔安全提醒
+                    </h3>
+                    <ul class="text-red-700 space-y-2">
+                        <li>• 甘海子：海拔3150米</li>
+                        <li>• 玉龙雪山索道：海拔4506米</li>
+                        <li>• 建议提前服用红景天</li>
+                        <li>• 避免剧烈运动</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 技术架构 -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">🛠️ 技术架构</h2>
+            <div class="bg-white rounded-xl p-8 shadow-lg">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4 mx-auto">
+                            <span class="text-2xl">⚛️</span>
+                        </div>
+                        <h4 class="font-semibold mb-2">React 18</h4>
+                        <p class="text-sm text-gray-600">现代化前端框架</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4 mx-auto">
+                            <span class="text-2xl">⚡</span>
+                        </div>
+                        <h4 class="font-semibold mb-2">Next.js 14</h4>
+                        <p class="text-sm text-gray-600">全栈React框架</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-4 mx-auto">
+                            <span class="text-2xl">🎨</span>
+                        </div>
+                        <h4 class="font-semibold mb-2">TailwindCSS</h4>
+                        <p class="text-sm text-gray-600">实用优先CSS框架</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mb-4 mx-auto">
+                            <span class="text-2xl">📝</span>
+                        </div>
+                        <h4 class="font-semibold mb-2">TypeScript</h4>
+                        <p class="text-sm text-gray-600">类型安全开发</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 启动说明 -->
+        <section class="text-center">
+            <div class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl p-8 text-white">
+                <h2 class="text-3xl font-bold mb-4">🚀 立即体验</h2>
+                <p class="text-xl mb-6 opacity-90">项目已成功启动，请在浏览器中访问以下地址</p>
+                <div class="bg-white bg-opacity-20 rounded-lg p-4 mb-6">
+                    <code class="text-lg font-mono">http://localhost:3333</code>
+                </div>
+                <div class="space-y-2 text-sm opacity-80">
+                    <p>✅ 依赖已安装完成</p>
+                    <p>✅ 开发服务器已启动</p>
+                    <p>✅ 端口3333正在监听</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-gray-800 text-white py-8 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-gray-400">© 2024 深圳→大理/丽江自驾游规划系统 | 基于 Next.js + React + TypeScript 构建</p>
+        </div>
+    </footer>
+</body>
+</html> 

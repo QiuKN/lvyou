@@ -16,7 +16,8 @@ import {
   Minimize2,
   Car,
   Mountain,
-  AlertTriangle
+  AlertTriangle,
+  RefreshCw
 } from 'lucide-react';
 
 export default function HomePage() {
@@ -109,7 +110,7 @@ export default function HomePage() {
                 </button>
               </div>
             </div>
-            <div className="h-96 lg:h-[500px] p-4">
+            <div className="h-96 lg:h-[500px] p-0">
               <MapComponent
                 markers={mapMarkers}
                 trafficInfo={trafficWarnings}

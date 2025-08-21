@@ -10,7 +10,7 @@ export const xiaohongshuContent: XiaohongshuContent[] = [
     likes: 43,
     comments: 3,
     tags: ["大理", "洱海", "去有风的地方", "旅行"],
-    imageUrl: "https://sns-webpic-qc.xhscdn.com/202508211122/cc60d77b3fac3684cbfebc3fdd14b13a/1040g00831l0i7i6m2u2g5p46nrojokig2eocqh0!nd_dft_wlteh_webp_3",
+    imageUrl: "/images/xiaohongshu/xiaohongshu-01.webp",
     category: "洱海攻略"
   },
   {
@@ -21,7 +21,7 @@ export const xiaohongshuContent: XiaohongshuContent[] = [
     likes: 176,
     comments: 21,
     tags: ["大理", "环洱海巴士", "云南", "旅游攻略"],
-    imageUrl: "https://sns-webpic-qc.xhscdn.com/202508211122/b0a51fe55e55ff3235e18e4e9de28e65/1040g00831komht1diu3g5omobmhgga1o792g5cg!nd_dft_wlteh_webp_3",
+    imageUrl: "/images/xiaohongshu/xiaohongshu-02.webp",
     category: "洱海攻略"
   },
   {
@@ -32,7 +32,7 @@ export const xiaohongshuContent: XiaohongshuContent[] = [
     likes: 136,
     comments: 10,
     tags: ["大理", "洱海", "环海攻略", "云南"],
-    imageUrl: "https://sns-webpic-qc.xhscdn.com/202508211122/a135bd3ffc7c20edee6f5fc5b22e0fd9/1040g00831l0i7i6m2u0g5p46nrojokig12rghvo!nd_dft_wlteh_webp_3",
+    imageUrl: "/images/xiaohongshu/xiaohongshu-03.webp",
     category: "洱海攻略"
   },
   {
@@ -43,7 +43,7 @@ export const xiaohongshuContent: XiaohongshuContent[] = [
     likes: 92,
     comments: 60,
     tags: ["大理", "洱海", "生态廊道", "喜洲"],
-    imageUrl: "https://sns-webpic-qc.xhscdn.com/202508211122/c75cbf5b1556d6c114284d1d81cb0caa/1040g00831l0i7i6m2u105p46nrojokig0msike0!nd_dft_wlteh_webp_3",
+    imageUrl: "/images/xiaohongshu/xiaohongshu-04.webp",
     category: "洱海攻略"
   },
   {
@@ -54,7 +54,7 @@ export const xiaohongshuContent: XiaohongshuContent[] = [
     likes: 59,
     comments: 3,
     tags: ["大理", "洱海", "龙龛码头", "去有风的地方"],
-    imageUrl: "https://sns-webpic-qc.xhscdn.com/202508211122/5f8f8888f72651a567992d8e25b1a20b/1040g00831l0i7i6m2u1g5p46nrojokigkbbk1oo!nd_dft_wlteh_webp_3",
+    imageUrl: "/images/xiaohongshu/xiaohongshu-05.webp",
     category: "洱海攻略"
   },
 
@@ -67,7 +67,7 @@ export const xiaohongshuContent: XiaohongshuContent[] = [
     likes: 1132,
     comments: 87,
     tags: ["玉龙雪山", "丽江", "索道攻略", "云南"],
-    imageUrl: "https://sns-webpic-qc.xhscdn.com/202508211123/c000a34253ea68d6ebf120ec3e0ed2ea/1040g2sg319298qgekua05pf6h6519ed4oduii38!nd_dft_wlteh_webp_3",
+    imageUrl: "/images/xiaohongshu/xiaohongshu-06.webp",
     category: "玉龙雪山攻略"
   },
   {
@@ -78,7 +78,7 @@ export const xiaohongshuContent: XiaohongshuContent[] = [
     likes: 462,
     comments: 78,
     tags: ["玉龙雪山", "登顶", "4680", "云南"],
-    imageUrl: "https://sns-webpic-qc.xhscdn.com/202508211123/3a55a9907d529fb35941f0b1718acec1/1040g2sg31l778pck52e05n6ikt3lnt61uj4i19g!nd_dft_wlteh_webp_3",
+    imageUrl: "/images/xiaohongshu/xiaohongshu-07.webp",
     category: "玉龙雪山攻略"
   },
   {
@@ -89,7 +89,7 @@ export const xiaohongshuContent: XiaohongshuContent[] = [
     likes: 1389,
     comments: 292,
     tags: ["玉龙雪山", "高反", "注意事项", "丽江"],
-    imageUrl: "https://sns-webpic-qc.xhscdn.com/202508211123/bdb6f791cc812b58d15493277c7733ef/1040g2sg319298qgeku705pf6h6519ed433unon0!nd_dft_wlteh_webp_3",
+    imageUrl: "/images/xiaohongshu/xiaohongshu-08.webp",
     category: "玉龙雪山攻略"
   },
   {
@@ -100,7 +100,7 @@ export const xiaohongshuContent: XiaohongshuContent[] = [
     likes: 170,
     comments: 132,
     tags: ["玉龙雪山", "一日游", "丽江", "云南"],
-    imageUrl: "https://sns-webpic-qc.xhscdn.com/202508211123/d61c16a5c201dcb660fd78e71a7ec22c/1040g2sg319298qgeku7g5pf6h6519ed432qig7g!nd_dft_wlteh_webp_3",
+    imageUrl: "/images/xiaohongshu/xiaohongshu-09.webp",
     category: "玉龙雪山攻略"
   },
   {
@@ -111,7 +111,7 @@ export const xiaohongshuContent: XiaohongshuContent[] = [
     likes: 881,
     comments: 126,
     tags: ["玉龙雪山", "冰川公园", "冬日仙境", "丽江"],
-    imageUrl: "https://sns-webpic-qc.xhscdn.com/202508211123/0178f9d425f22a4bd0361d80ec402856/1040g2sg319298qgeku805pf6h6519ed4fdh9r3o!nd_dft_wlteh_webp_3",
+    imageUrl: "/images/xiaohongshu/xiaohongshu-10.webp",
     category: "玉龙雪山攻略"
   },
 
@@ -124,7 +124,7 @@ export const xiaohongshuContent: XiaohongshuContent[] = [
     likes: 5068,
     comments: 26,
     tags: ["大理古城", "citywalk", "路线攻略", "云南"],
-    imageUrl: "https://sns-webpic-qc.xhscdn.com/202508211123/43dfbc86f69d2b1648b99676d227279f/1040g2sg31cel7nnq0k5g5npnb07g9flasnrilno!nd_dft_wlteh_webp_3",
+    imageUrl: "/images/xiaohongshu/xiaohongshu-11.webp",
     category: "大理古城攻略"
   },
   {
@@ -135,7 +135,7 @@ export const xiaohongshuContent: XiaohongshuContent[] = [
     likes: 4583,
     comments: 32,
     tags: ["大理古城", "夜游路线", "路线图", "大理"],
-    imageUrl: "https://sns-webpic-qc.xhscdn.com/202508211123/d9ec4366ffb2f0d9e2984fb3650e904a/1040g00831cel7nsrgm6g5npnb07g9flat841nq8!nd_dft_wlteh_webp_3",
+    imageUrl: "/images/xiaohongshu/xiaohongshu-12.webp",
     category: "大理古城攻略"
   },
   {
@@ -146,7 +146,7 @@ export const xiaohongshuContent: XiaohongshuContent[] = [
     likes: 370,
     comments: 1,
     tags: ["大理古城", "逛吃攻略", "美食", "大理"],
-    imageUrl: "https://sns-webpic-qc.xhscdn.com/202508211123/1242d1bbff494ba353922739a484e705/1040g2sg31cel7nn5gudg5npnb07g9flar810g68!nd_dft_wlteh_webp_3",
+    imageUrl: "/images/xiaohongshu/xiaohongshu-13.webp",
     category: "大理古城攻略"
   },
   {
@@ -157,7 +157,7 @@ export const xiaohongshuContent: XiaohongshuContent[] = [
     likes: 7,
     comments: 1,
     tags: ["大理古城", "深度游", "云南", "攻略"],
-    imageUrl: "https://sns-webpic-qc.xhscdn.com/202508211123/96d8f89a20157ed51bdc767768a736a8/1040g2sg31cel7ntg0mdg5npnb07g9fla6f4ql5g!nd_dft_wgth_webp_3",
+    imageUrl: "/images/xiaohongshu/xiaohongshu-14.webp",
     category: "大理古城攻略"
   },
   {
@@ -168,7 +168,7 @@ export const xiaohongshuContent: XiaohongshuContent[] = [
     likes: 10,
     comments: 0,
     tags: ["大理古城", "诗意", "南诏", "茶马古道"],
-    imageUrl: "https://sns-webpic-qc.xhscdn.com/202508211123/38ba348ea6335ef238aa3c1755ad0d74/1040g00831cel7ntdgu6g5npnb07g9fla0i3vf30!nd_dft_wlteh_webp_3",
+    imageUrl: "/images/xiaohongshu/xiaohongshu-15.webp",
     category: "大理古城攻略"
   },
 
@@ -214,7 +214,7 @@ export const xiaohongshuContent: XiaohongshuContent[] = [
     likes: 660,
     comments: 4,
     tags: ["丽江", "旅居", "千依山舍", "云南"],
-    imageUrl: "https://sns-webpic-qc.xhscdn.com/202508211123/c000a34253ea68d6ebf120ec3e0ed2ea/1040g2sg319298qgekua05pf6h6519ed4oduii38!nd_dft_wlteh_webp_3",
+    imageUrl: "/images/xiaohongshu/xiaohongshu-06.webp",
     category: "丽江攻略"
   },
   {
@@ -225,7 +225,7 @@ export const xiaohongshuContent: XiaohongshuContent[] = [
     likes: 794,
     comments: 235,
     tags: ["丽江", "徒步", "虎跳峡", "户外"],
-    imageUrl: "https://sns-webpic-qc.xhscdn.com/202508211123/bdb6f791cc812b58d15493277c7733ef/1040g2sg319298qgeku705pf6h6519ed433unon0!nd_dft_wlteh_webp_3",
+    imageUrl: "/images/xiaohongshu/xiaohongshu-08.webp",
     category: "丽江攻略"
   },
 
@@ -238,7 +238,7 @@ export const xiaohongshuContent: XiaohongshuContent[] = [
     likes: 657,
     comments: 71,
     tags: ["深圳", "云南", "自驾游", "西双版纳"],
-    imageUrl: "https://sns-webpic-qc.xhscdn.com/202508211123/43dfbc86f69d2b1648b99676d227279f/1040g2sg31cel7nnq0k5g5npnb07g9flasnrilno!nd_dft_wlteh_webp_3",
+    imageUrl: "/images/xiaohongshu/xiaohongshu-11.webp",
     category: "自驾游攻略"
   },
   {
@@ -249,7 +249,7 @@ export const xiaohongshuContent: XiaohongshuContent[] = [
     likes: 1639,
     comments: 221,
     tags: ["广东", "自驾游", "G323国道", "天井山"],
-    imageUrl: "https://sns-webpic-qc.xhscdn.com/202508211123/d9ec4366ffb2f0d9e2984fb3650e904a/1040g00831cel7nsrgm6g5npnb07g9flat841nq8!nd_dft_wlteh_webp_3",
+    imageUrl: "/images/xiaohongshu/xiaohongshu-12.webp",
     category: "自驾游攻略"
   },
   {
@@ -260,7 +260,7 @@ export const xiaohongshuContent: XiaohongshuContent[] = [
     likes: 60,
     comments: 26,
     tags: ["自驾游", "广西", "一人一车", "说走就走"],
-    imageUrl: "https://sns-webpic-qc.xhscdn.com/202508211123/1242d1bbff494ba353922739a484e705/1040g2sg31cel7nn5gudg5npnb07g9flar810g68!nd_dft_wlteh_webp_3",
+    imageUrl: "/images/xiaohongshu/xiaohongshu-13.webp",
     category: "自驾游攻略"
   },
   {
@@ -271,7 +271,7 @@ export const xiaohongshuContent: XiaohongshuContent[] = [
     likes: 12,
     comments: 7,
     tags: ["广州", "云南", "自驾", "大理丽江"],
-    imageUrl: "https://sns-webpic-qc.xhscdn.com/202508211123/96d8f89a20157ed51bdc767768a736a8/1040g2sg31cel7ntg0mdg5npnb07g9fla6f4ql5g!nd_dft_wgth_webp_3",
+    imageUrl: "/images/xiaohongshu/xiaohongshu-14.webp",
     category: "自驾游攻略"
   },
   {
@@ -282,7 +282,7 @@ export const xiaohongshuContent: XiaohongshuContent[] = [
     likes: 814,
     comments: 86,
     tags: ["广东", "自驾游", "深圳", "周边游"],
-    imageUrl: "https://sns-webpic-qc.xhscdn.com/202508211123/38ba348ea6335ef238aa3c1755ad0d74/1040g00831cel7ntdgu6g5npnb07g9fla0i3vf30!nd_dft_wlteh_webp_3",
+    imageUrl: "/images/xiaohongshu/xiaohongshu-15.webp",
     category: "自驾游攻略"
   }
 ]; 
